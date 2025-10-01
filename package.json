@@ -1,0 +1,26 @@
+{
+  "name": "js-to-ts-converter-cli",  
+  "version": "1.0.0",
+  "main": "ts-converter.js",
+  "description": "A JS to TS/TSX converter CLI with JSX detection and destructured params fix",
+  "bin": {
+    "js-to-ts-converter": "./ts-converter.js"
+  },
+  "scripts": {
+    "start": "node ts-converter.js"
+  },
+  "keywords": [
+    "js",
+    "ts",
+    "tsx",
+    "converter",
+    "cli"
+  ],
+  "author": "",
+  "license": "ISC", 
+  "dependencies": {
+    "@babel/generator": "^7.28.3",
+    "@babel/parser": "^7.28.4",
+    "@babel/traverse": "^7.28.4"
+  }
+}
