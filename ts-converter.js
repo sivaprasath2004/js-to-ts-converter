@@ -1,15 +1,3 @@
-#!/usr/bin/env node
-/**
- * ts-converter.js
- * JS → TS/TSX converter CLI
- * Fully TypeScript-compliant
- * - Rewrites destructured function params to params:any
- * - Destructures inside function body
- * - Skips for...in / for...of loop variable types
- * - Infers basic types for variables
- * - Detects JSX → .tsx
- * - Removes .js extensions from imports
- */
 
 const fs = require("fs");
 const path = require("path");
@@ -22,12 +10,11 @@ const SKIP_DIRS = ["node_modules", "public", "web_pack", ".erb"];
 const OUT_ROOT = "tsConverter";
 let OUT_PUT_PATH = "";
 
-// Ensure output folder exists
+
 function ensureDir(filePath) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
 }
-
-// Basic type inference
+ 
 function inferType(node) {
   if (!node) return "any";
   switch (node.type) {
@@ -40,7 +27,6 @@ function inferType(node) {
   }
 }
 
-// Rewrite destructured function parameters to params:any
 function rewriteDestructuredParam(path, param) {
   if (param.type === "ObjectPattern" || param.type === "ArrayPattern") {
     const paramName = t.identifier("params");
@@ -58,7 +44,7 @@ function rewriteDestructuredParam(path, param) {
   return param;
 }
 
-// Handle function parameters
+
 function handleParam(path) {
   path.node.params = path.node.params.map(param => {
     if (param.type === "Identifier") {
@@ -71,7 +57,6 @@ function handleParam(path) {
   if (!path.node.returnType) path.node.returnType = t.tsTypeAnnotation(t.tsAnyKeyword());
 }
 
-// Convert a single file
 function convertFile(jsFile, outFile) {
   const src = fs.readFileSync(jsFile, "utf8");
   let ast;
@@ -125,16 +110,14 @@ function convertFile(jsFile, outFile) {
   });
 
   const { code } = generate(ast, { retainLines: true, compact: false, comments: true });
-
-  // Adjust extension for JSX
+ 
   if (hasJSX) outFile = outFile.replace(/\.ts$/, ".tsx");
 
   ensureDir(outFile);
   fs.writeFileSync(outFile, code, "utf8");
   console.log("✔ Converted:", jsFile, "→", outFile);
-}
+} 
 
-// ---------------- Process Path ----------------
 function processPath(input) {
   const stat = fs.statSync(input);
 
@@ -154,8 +137,7 @@ function processPath(input) {
     convertFile(input, outFile);
   } else console.warn("Skipped:", input);
 }
-
-// ---------------- Walk Directory ----------------
+ 
 function walkDir(dir) {
   const files = fs.readdirSync(dir);
 
@@ -177,9 +159,8 @@ function walkDir(dir) {
       convertFile(fullPath, outFile);
     }
   }
-}
+} 
 
-// ---------------- CLI Entry ----------------
 const target = process.argv[2];
 if (!target) {
   console.error("Usage: node ts-converter.js <file.js|folder>");
