@@ -1,6 +1,6 @@
 {
   "name": "js-to-ts-converter-cli",  
-  "version": "1.0.0",
+ "version": "1.0.3",
   "main": "ts-converter.js",
   "description": "A JS to TS/TSX converter CLI with JSX detection and destructured params fix",
   "bin": {
